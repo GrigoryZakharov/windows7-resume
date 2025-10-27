@@ -1,6 +1,11 @@
 import { useState } from "react";
 import Window from "./Window";
-import '../styles/desktop.css'
+import '../styles/desktop.css';
+import userIcon from '../assets/icons/user.png';
+import folderIcon from '../assets/icons/folder.png';
+import resume from '../assets/resume.pdf';
+import winIcon from '../assets/icons/win.png';
+import wallpaper from '../assets/wallpaper.jpg';
 
 
 export default function Desktop() {
@@ -43,7 +48,7 @@ export default function Desktop() {
   const icons = [
   {
     title: "About Me",
-    img: "/icons/user.png",
+    img: userIcon,
     content: (
       <div style={{ padding: "10px", lineHeight: 1.5, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <h2>Григорий Захаров</h2>
@@ -75,7 +80,7 @@ export default function Desktop() {
   },
   {
     title: "Projects",
-    img: "/icons/folder.png",
+    img: folderIcon,
     content: (
       <div style={{ padding: "10px", lineHeight: 1.5 }}>
         <h2>Мои проекты</h2>
@@ -127,7 +132,7 @@ export default function Desktop() {
       </div>
     )
   },
-  { title: "Resume", img: "/icons/folder.png", content: "Свяжись со мной." },
+  { title: "Resume", img: folderIcon, content: "Свяжись со мной." },
   ];
 
   function shutdown() {
@@ -138,6 +143,22 @@ export default function Desktop() {
   return (
     <div
     class="desktop"
+    style={{
+      backgroundImage: `url(${wallpaper})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignContent: 'flex-start',
+      padding: '20px',
+      gap: '20px'
+    }}
     >
       {icons.map ((icon) => (
       <div 
@@ -162,7 +183,7 @@ export default function Desktop() {
             onClose={() => closeWindow(win.id)}
           >
             <iframe
-              src="/resume.pdf"
+              src={resume}
               width="100%"
               height="100%"
               style={{ border: "none", width : "100%" ,height : "100%" }}
@@ -188,7 +209,7 @@ export default function Desktop() {
 
 
       <div class="taskbar">
-        <button onClick={() => setShowWinMenu(prev => !prev)}><img class = "win-icon" src = "/icons/win.png"></img></button>
+        <button onClick={() => setShowWinMenu(prev => !prev)}><img class = "win-icon" src = {winIcon}></img></button>
         {windows.map(win => (
           <button class="tab" key={win.id} onClick={() => toggleMinimize(win.id)}>
             {win.title}
