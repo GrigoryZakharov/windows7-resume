@@ -206,3 +206,130 @@ body, html, #root {
 .window-content a:hover {
   text-decoration: underline;
 }
+
+/* Медиа-запросы для мобильных устройств */
+@media (max-width: 768px) {
+  .desktop {
+    padding: 10px;
+  }
+
+  .window {
+    width: 90vw !important;
+    height: 80vh !important;
+    left: 5vw !important;
+    top: 10vh !important;
+  }
+
+  .icon {
+    width: 80px;
+    padding: 5px;
+  }
+
+  .icon img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .icon span {
+    font-size: 12px;
+  }
+
+  .taskbar {
+    height: 50px;
+  }
+
+  .win-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tab {
+    font-size: 12px;
+    padding: 0 5px;
+  }
+
+  .window-content {
+    font-size: 14px;
+  }
+
+  .window-content h2 {
+    font-size: 16px;
+  }
+
+  .window-content h3 {
+    font-size: 14px;
+  }
+
+  .window-content h4 {
+    font-size: 12px;
+  }
+
+  .window-header {
+    padding: 3px 8px;
+    font-size: 14px;
+  }
+
+  .close-button {
+    padding: 1px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+  .desktop {
+    padding: 5px;
+  }
+
+  .window {
+    width: 95vw !important;
+    height: 85vh !important;
+    left: 2.5vw !important;
+    top: 7.5vh !important;
+  }
+
+  .icon {
+    width: 70px;
+    padding: 3px;
+  }
+
+  .icon img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .taskbar {
+    height: 40px;
+    padding: 0 5px;
+  }
+
+  .win-menu {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .window-content {
+    padding: 5px;
+  }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-height: 480px) and (orientation: landscape) {
+  .window {
+    height: 90vh !important;
+    top: 5vh !important;
+  }
+
+  .icon {
+    width: 60px;
+  }
+
+  .icon img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .taskbar {
+    height: 35px;
+  }
+}
