@@ -1,7 +1,7 @@
 import '../styles/desktop.css'
 import { useState, useRef, useEffect } from "react";
 
-export default function Window({ title, children, onClose, x, y, width = 400, height = 300 }) {
+export default function Window({ title, children, onClose, x, y, width, height}) {
   const windowRef = useRef(null);
   const [pos, setPos] = useState({ x: x, y: y });
   const [dragging, setDragging] = useState(false);
@@ -52,7 +52,6 @@ export default function Window({ title, children, onClose, x, y, width = 400, he
 
   useEffect(() => {
     if (isMobile) {
-      // Центрируем окно на мобильных устройствах
       setPos({
         x: (window.innerWidth - width) / 2,
         y: (window.innerHeight - height) / 2

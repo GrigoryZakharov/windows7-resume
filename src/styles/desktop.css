@@ -207,7 +207,6 @@ body, html, #root {
   text-decoration: underline;
 }
 
-/* Медиа-запросы для мобильных устройств */
 @media (max-width: 768px) {
   .desktop {
     padding: 10px;
@@ -275,7 +274,6 @@ body, html, #root {
   }
 }
 
-/* Для очень маленьких экранов */
 @media (max-width: 480px) {
   .desktop {
     padding: 5px;
@@ -313,7 +311,6 @@ body, html, #root {
   }
 }
 
-/* Ландшафтная ориентация на мобильных */
 @media (max-height: 480px) and (orientation: landscape) {
   .window {
     height: 90vh !important;
@@ -332,4 +329,16 @@ body, html, #root {
   .taskbar {
     height: 35px;
   }
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.errIcon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }

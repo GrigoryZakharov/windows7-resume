@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Window from "./Window";
 import '../styles/desktop.css';
 import userIcon from '../assets/icons/user.png';
@@ -6,17 +6,51 @@ import folderIcon from '../assets/icons/folder.png';
 import resume from '../assets/resume.pdf';
 import winIcon from '../assets/icons/win.png';
 import wallpaper from '../assets/wallpaper.jpg';
-
+import nfsIcon from '../assets/icons/nfs.png';
+import errIcon from '../assets/icons/error.png';
+import errSound from '../assets/sounds/err-sound.mp3';
+import startUpSound from '../assets/sounds/startUp.mp3';
+import openSound from '../assets/sounds/open.mp3';
 
 export default function Desktop() {
   const [windows, setWindows] = useState([]);
   const [offsetCounter, setOffsetCounter] = useState(0);
   const [showWinMenu, setShowWinMenu] = useState(false);
 
+  useEffect(() => {
+    const startupSound = new Audio(startUpSound);
+    startupSound.volume = 0.5;
+    let didPlay = false;
+    startupSound.play().then(() => {
+      didPlay = true;
+    }).catch(() => {
+      const onFirstInteraction = () => {
+        startupSound.play().catch(() => {});
+        window.removeEventListener('pointerdown', onFirstInteraction);
+      };
+      window.addEventListener('pointerdown', onFirstInteraction, { once: true });
+    });
+
+    return () => {
+      try {
+        startupSound.pause();
+        startupSound.currentTime = 0;
+      } catch (e) {}
+    };
+  }, []);
+
   function openWindow(icon) {
     const offset = offsetCounter * 30;
     setOffsetCounter(prev => prev + 1);
     const id = Date.now() + Math.random();
+
+    if (icon.title === "NFSMW.exe") {
+    const sound = new Audio(errSound); 
+    sound.play();
+    } else {
+    const sound = new Audio(openSound); 
+    sound.play();
+    }
 
     if (offsetCounter >= 10) {
       setOffsetCounter(0);
@@ -31,6 +65,8 @@ export default function Desktop() {
         x: 100 + offset,
         y: 100 + offset,
         minimized: false,
+        width: icon.width || 400,
+        height: icon.height || 300,
       },
     ]);
   }
@@ -76,7 +112,8 @@ export default function Desktop() {
           </a>
         </div>
       </div>
-    )
+    ),
+    width: 500, height: 400
   },
   {
     title: "Projects",
@@ -130,9 +167,16 @@ export default function Desktop() {
           </a>
         </div>
       </div>
-    )
+    ),
+    width: 700, height: 500
   },
-  { title: "Resume", img: folderIcon, content: "Свяжись со мной." },
+  { title: "Resume", img: folderIcon, content: "Свяжись со мной.", width: 800, height: 800 },
+  { title: "NFSMW.exe", img: nfsIcon, content: 
+  (<div class = "error-content">
+    <img src = {errIcon} className = "errIcon" alt="error"></img>
+    <p>Ошибка при запуске приложения (0х000007b).</p>
+  </div>
+  ), width: 350, height: 150 },
   ];
 
   function shutdown() {
@@ -178,8 +222,8 @@ export default function Desktop() {
             title={win.title}
             x={win.x}
             y={win.y}
-            width={700} 
-            height={900}
+            width={win.width} 
+            height={win.height}
             onClose={() => closeWindow(win.id)}
           >
             <iframe
@@ -197,8 +241,8 @@ export default function Desktop() {
               title={win.title}
               x={win.x}
               y={win.y}
-              width={500} 
-              height={500}
+              width={win.width}
+              height={win.height}
               onClose={() => closeWindow(win.id)}
             >
               {win.content}
