@@ -224,7 +224,7 @@ export default function Desktop() {
                     width: 400,
                     height: 180,
                     content: (
-                      <div style={{ padding: "10px", color: "black" }}>
+                      <div style={{ padding: "10px", color: "black", width: "100%" }}>
                         <h3 style={{ marginBottom: "10px" }}>🎧 {song.title}</h3>
                         <audio
                           src={song.src}
