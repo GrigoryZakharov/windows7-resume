@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Window from "./Window";
 import '../styles/desktop.css';
 import userIcon from '../assets/icons/user.png';
@@ -11,11 +11,20 @@ import errIcon from '../assets/icons/error.png';
 import errSound from '../assets/sounds/err-sound.mp3';
 import startUpSound from '../assets/sounds/startUp.mp3';
 import openSound from '../assets/sounds/open.mp3';
+import txtIcon from '../assets/icons/txt.png';
+import pdfIcon from '../assets/icons/pdf.png';
+import turnTheTide from '../assets/music/Sylver-Turn the tide.mp3';
+import getAway from '../assets/music/Maxx-Get_A_Way.mp3';
+import harderTheyFall from '../assets/music/Kosheen-Harder They Fall.mp3';
+import mp3Icon from '../assets/icons/mp3.ico';
+
 
 export default function Desktop() {
   const [windows, setWindows] = useState([]);
   const [offsetCounter, setOffsetCounter] = useState(0);
   const [showWinMenu, setShowWinMenu] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const startupSound = new Audio(startUpSound);
@@ -62,6 +71,7 @@ export default function Desktop() {
         id: id,
         title: icon.title,
         content: icon.content,
+        img: icon.img,
         x: 100 + offset,
         y: 100 + offset,
         minimized: false,
@@ -80,10 +90,21 @@ export default function Desktop() {
       prev.map(win => win.id === id ? { ...win, minimized: !win.minimized } : win)
     );
   }
+  function minimizeWindows() {
+    setWindows(prev =>
+      prev.map(win => ({ ...win, minimized: true }))
+    );
+  }
+
+  const songs = [
+    { title: "Sylver - Turn The Tide", src: turnTheTide },
+    { title: "Maxx - Get A Way", src: getAway },
+    { title: "Kosheen - Harder They Fall", src: harderTheyFall },
+  ];
 
   const icons = [
   {
-    title: "About Me",
+    title: "About Me.exe",
     img: userIcon,
     content: (
       <div style={{ padding: "10px", lineHeight: 1.5, display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -116,8 +137,8 @@ export default function Desktop() {
     width: 500, height: 400
   },
   {
-    title: "Projects",
-    img: folderIcon,
+    title: "Projects.txt",
+    img: txtIcon,
     content: (
       <div style={{ padding: "10px", lineHeight: 1.5 }}>
         <h2>Мои проекты</h2>
@@ -170,13 +191,68 @@ export default function Desktop() {
     ),
     width: 700, height: 500
   },
-  { title: "Resume", img: folderIcon, content: "Свяжись со мной.", width: 800, height: 800 },
+  { title: "Resume.pdf", img: pdfIcon, content: "Свяжись со мной.", width: 800, height: 800 },
   { title: "NFSMW.exe", img: nfsIcon, content: 
   (<div class = "error-content">
     <img src = {errIcon} className = "errIcon" alt="error"></img>
     <p>Ошибка при запуске приложения (0х000007b).</p>
   </div>
   ), width: 350, height: 150 },
+  {
+      title: "Music",
+      img: folderIcon,
+      content: (
+        <div style={{ color: "black", padding: "10px" }}>
+          <h2>🎵 Моя музыка</h2>
+          <p>Дважды кликните по песне, чтобы открыть проигрыватель.</p>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {songs.map((song, i) => (
+              <li
+                key={i}
+                style={{
+                  padding: "6px 8px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onDoubleClick={() =>
+                  setCurrentTrack(song) ||
+                  openWindow({
+                    title: song.title,
+                    img: mp3Icon,
+                    width: 400,
+                    height: 180,
+                    content: (
+                      <div style={{ padding: "10px", color: "black" }}>
+                        <h3 style={{ marginBottom: "10px" }}>🎧 {song.title}</h3>
+                        <audio
+                          src={song.src}
+                          controls
+                          autoPlay
+                          style={{ width: "100%" }}
+                        ></audio>
+                      </div>
+                    ),
+                  })
+                }
+                onMouseOver={(e) => (e.currentTarget.style.background = "#d0e7ff")}
+                onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+              >
+                <img
+                  src={mp3Icon}
+                  alt="mp3"
+                  style={{ width: "24px", marginRight: "10px" }}
+                />
+                {song.title}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ),
+      width: 400,
+      height: 300,
+    }
   ];
 
   function shutdown() {
@@ -215,50 +291,43 @@ export default function Desktop() {
       </div>
       ))}
 
-      {windows.map((win) =>
-        !win.minimized && win.title === "Resume" ? (
-          <Window
-            key={win.id}
-            title={win.title}
-            x={win.x}
-            y={win.y}
-            width={win.width} 
-            height={win.height}
-            onClose={() => closeWindow(win.id)}
-          >
+      {windows.map((win) => (
+        <Window
+          key={win.id}
+          title={win.title}
+          x={win.x}
+          y={win.y}
+          width={win.width}
+          height={win.height}
+          minimized={win.minimized}
+          onClose={() => closeWindow(win.id)}
+          onMinimize={() => toggleMinimize(win.id)}
+        >
+          {win.title === "Resume.pdf" ? (
             <iframe
               src={resume}
               width="100%"
               height="100%"
-              style={{ border: "none", width : "100%" ,height : "100%" }}
+              style={{ border: "none", width: "100%", height: "100%" }}
               title="Resume"
             ></iframe>
-          </Window>
-        ) : (
-          !win.minimized && (
-            <Window
-              key={win.id}
-              title={win.title}
-              x={win.x}
-              y={win.y}
-              width={win.width}
-              height={win.height}
-              onClose={() => closeWindow(win.id)}
-            >
-              {win.content}
-            </Window>
-          )
-        )
-      )}
+          ) : (
+            win.content
+          )}
+        </Window>
+      ))}
 
 
       <div class="taskbar">
-        <button onClick={() => setShowWinMenu(prev => !prev)}><img class = "win-icon" src = {winIcon}></img></button>
-        {windows.map(win => (
-          <button class="tab" key={win.id} onClick={() => toggleMinimize(win.id)}>
-            {win.title}
-          </button>
-        ))}
+        <div class="taskbar-left">
+          <button onClick={() => setShowWinMenu(prev => !prev)}><img class = "win-icon" src = {winIcon}></img></button>
+          {windows.map(win => (
+            <button class="tab" key={win.id} onClick={() => toggleMinimize(win.id)}>
+              {win.img && <img src={win.img} alt={win.title} class="tab-icon" />}
+            </button>
+          ))}
+        </div>
+        <button class="tab-key" onClick={minimizeWindows}></button>
       </div>
 
         

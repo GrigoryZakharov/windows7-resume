@@ -45,7 +45,6 @@ body, html, #root {
   width: 100px;
   height: 100px;
 }
-
 .icon span {
     text-shadow:
     1px 1px 2px #000,
@@ -108,6 +107,31 @@ body, html, #root {
     transition: 0.3s ease;
 }
 
+.window-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.minimize-button {
+  background: rgba(0, 120, 215, 0.3); 
+  color: #fff; 
+  border: 1px solid darkblue;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 23px;
+  line-height: 1;
+}
+.minimize-button:hover {
+  background: darkblue;
+  transition: 0.15s ease;
+}
+
 .taskbar {
   position: fixed;
   overflow: hidden;
@@ -117,17 +141,24 @@ body, html, #root {
   height: 40px;
   background: rgba(0, 120, 215, 0.5);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
   backdrop-filter: blur(8px);
-  z-index: 10000;
+  z-index: 1000;
+}
+
+.taskbar-left {
+  display: flex;
+  align-items: center;
 }
 
 .taskbar button {
-  margin: 0 5px;
+  display: flex;
+  margin: 0;
   border: none;
-  border-radius: 3px;
+  border-radius: 0;
   background: rgba(0, 120, 215, 0.3);
   cursor: pointer;
 }
@@ -139,7 +170,6 @@ body, html, #root {
   background: rgba(0, 120, 215, 0.3);
   backdrop-filter: blur(8px);
   padding: 10px;
-  z-index: 10001;
 }
 
 .win-icon {
@@ -150,22 +180,39 @@ body, html, #root {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     transition: 0.3s ease;
-    transform: scale(1.1);
 }
 
 .tab {
     height: 40px;
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 10px 0 10px;
     color: white;
     text-shadow: 1px 1px 2px #000;
     cursor: pointer;
+}
+.tab-icon {
+    width: 30px;
+    height: 30px;
 }
 .tab:hover {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     transition: 0.3s ease;
+}
+.tab-key {
+    height: 40px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: rgba(0, 120, 215, 0.3) !important;
+    border: 1px solid grey !important;
+}
+
+.tab-key:hover {
+    background: rgba(0, 120, 215, 1) !important;
+    transition: 0.3s ease !important;
 }
 .window-content h2 {
   font-size: 18px;

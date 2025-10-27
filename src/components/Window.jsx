@@ -1,7 +1,7 @@
 import '../styles/desktop.css'
 import { useState, useRef, useEffect } from "react";
 
-export default function Window({ title, children, onClose, x, y, width, height}) {
+export default function Window({ title, children, onClose, onMinimize, x, y, width, height, minimized }) {
   const windowRef = useRef(null);
   const [pos, setPos] = useState({ x: x, y: y });
   const [dragging, setDragging] = useState(false);
@@ -61,6 +61,10 @@ export default function Window({ title, children, onClose, x, y, width, height})
 
 
 
+  const minimizedStyle = minimized
+    ? { left: '-9999px', top: '-9999px', opacity: 0, pointerEvents: 'none' }
+    : {};
+
   return (
     <div
       class="window"
@@ -72,6 +76,7 @@ export default function Window({ title, children, onClose, x, y, width, height})
         userSelect: "none",
         width: isMobile ? '90vw' : width + 'px',
         height: isMobile ? '80vh' : height + 'px',
+        ...minimizedStyle
       }}
       onMouseMove={handleMouseMove}
       onTouchMove={handleMouseMove}
@@ -84,12 +89,23 @@ export default function Window({ title, children, onClose, x, y, width, height})
         class="window-header"
       >
         <span>{title}</span>
-        <button
-          onClick={onClose}
-          class="close-button"
-        >
-          ✕
-        </button>
+        <div class="window-controls">
+          <button
+            onClick={onMinimize}
+            class="minimize-button"
+            aria-label="Minimize"
+            title="Minimize"
+          >
+            &#x2014;
+          </button>
+          <button
+            onClick={onClose}
+            class="close-button"
+            title="Close"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       <div class="window-content">
