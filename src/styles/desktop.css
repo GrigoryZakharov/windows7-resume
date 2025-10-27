@@ -110,15 +110,18 @@ body, html, #root {
 
 .taskbar {
   position: fixed;
+  overflow: hidden;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 40px;
-  background: rgba(0, 120, 215, 0.5);;
+  background: rgba(0, 120, 215, 0.5);
   display: flex;
   align-items: center;
   padding: 0 10px;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
 }
 
 .taskbar button {
@@ -134,7 +137,9 @@ body, html, #root {
   bottom: 40px;
   left: 0;
   background: rgba(0, 120, 215, 0.3);
+  backdrop-filter: blur(8px);
   padding: 10px;
+  z-index: 10001;
 }
 
 .win-icon {
